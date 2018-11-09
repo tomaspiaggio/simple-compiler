@@ -10,6 +10,7 @@ lazy val root = (project in file(".")).
     name := "trabajo-practico",
     libraryDependencies += scalaTest % Test,
     // https://mvnrepository.com/artifact/de.jflex/jflex
-    libraryDependencies += "de.jflex" % "jflex" % "1.7.0"
-
-)
+    libraryDependencies += "de.jflex" % "jflex" % "1.7.0",
+    // https://mvnrepository.com/artifact/java_cup/java_cup
+    libraryDependencies += "java_cup" % "java_cup" % "0.9e"
+  )

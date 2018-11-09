@@ -32,6 +32,8 @@ public class Main {
 
         // SEMANTIC ANALYSIS
 
+        // Graph
+
         // This step checks whether the tree makes sense. This means checking that the assignments
         // are the correct types, that operations are not made between incompatible types, if identifiers
         // are being used before declaration or not, etc
