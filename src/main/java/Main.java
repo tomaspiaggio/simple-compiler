@@ -1,34 +1,14 @@
+import java_cup.parser;
 import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-        String dirName = null;
-
         try {
-            for (int i = 0; i < args.length; i++) {
-                if (args[i].equals("-dir")) {
-                    i++;
-                    if (i >= args.length)
-                        throw new Error("Missing directory name");
-                    dirName = args[i];
-                } else {
-                    throw new Error(
-                            "Usage: java Main -dir directory");
-                }
-            }
-            if (dirName == null)
-                throw new Error("Directory not specified");
-            FileInputStream fileInputStream = new FileInputStream(
-                    new File(dirName, "program.in"));
-            System.setErr(new PrintStream(new FileOutputStream(
-                    new File(dirName, "program.err"))));
-            System.setOut(new PrintStream(new FileOutputStream(
-                    new File(dirName, "program.out"))));
-            Sentence lexer = new Sentence(new BufferedReader(fileInputStream));
-            lexer.yylex();
-        } catch (Exception exception) {
-            System.err.println("Exception in Main " + exception.toString());
-            exception.printStackTrace();
+            parser p = new parser(new Lexer(new FileReader("/assets/test.txt")));
+            Object result = p.parse().value;
+        } catch (Exception e) {
+            /* do cleanup here -- possibly rethrow e */
+            e.printStackTrace();
         }
     }
 
@@ -69,5 +49,4 @@ public class Main {
     // Define operations
 
     // CODE EXECUTION -> Create a stack
-}
 }
