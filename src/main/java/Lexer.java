@@ -663,7 +663,7 @@ class Lexer implements java_cup.runtime.Scanner {
           case 14: break;
           case 4: 
             { System.out.print(yytext());
-                         return symbol(sym.ID, new Integer(1));
+                         return symbol(1, new Integer(1));
             } 
             // fall through
           case 15: break;
