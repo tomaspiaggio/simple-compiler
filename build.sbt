@@ -11,6 +11,6 @@ lazy val root = (project in file(".")).
     libraryDependencies += scalaTest % Test,
     // https://mvnrepository.com/artifact/de.jflex/jflex
     libraryDependencies += "de.jflex" % "jflex" % "1.7.0",
-    // https://mvnrepository.com/artifact/java_cup/java_cup
-    libraryDependencies += "java_cup" % "java_cup" % "0.9e"
+
+    libraryDependencies += "java_cup" % "java_cup" % "11b" from "file:////Users/tomaspiaggio/Documents/Austral/Current/matedis/trabajo-practico/libs/java-cup-11b-runtime.jar"
   )
