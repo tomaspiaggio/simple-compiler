@@ -23,7 +23,6 @@
 /* --------------------------Usercode Section------------------------ */
 
 import java_cup.runtime.*;
-import jflex.*;
 
 
 /**
@@ -658,18 +657,18 @@ class Lexer implements java_cup.runtime.Scanner {
           case 13: break;
           case 3: 
             { System.out.print(yytext());
-                         return symbol(sym.STRING, new Integer(yytext()));
+                         return symbol(sym.NUMBER, new Integer(yytext()));
             } 
             // fall through
           case 14: break;
           case 4: 
             { System.out.print(yytext());
-                         return symbol(sym.COMMA, new Integer(1));
+                         return symbol(sym.ID, new Integer(1));
             } 
             // fall through
           case 15: break;
           case 5: 
-            { return symbol(sym.BANG);
+            { return symbol(sym.SEMI);
             } 
             // fall through
           case 16: break;
@@ -679,27 +678,27 @@ class Lexer implements java_cup.runtime.Scanner {
             // fall through
           case 17: break;
           case 7: 
-            { System.out.print(" - "); return symbol(sym.DASH);
+            { System.out.print(" - "); return symbol(sym.MINUS);
             } 
             // fall through
           case 18: break;
           case 8: 
-            { System.out.print(" * "); return symbol(sym.STAR);
+            { System.out.print(" * "); return symbol(sym.TIMES);
             } 
             // fall through
           case 19: break;
           case 9: 
-            { System.out.print(" / "); return symbol(sym.DOLLAR);
+            { System.out.print(" / "); return symbol(sym.DIVIDE);
             } 
             // fall through
           case 20: break;
           case 10: 
-            { System.out.print(" ( "); return symbol(sym.LBRACE);
+            { System.out.print(" ( "); return symbol(sym.LPAREN);
             } 
             // fall through
           case 21: break;
           case 11: 
-            { System.out.print(" ) "); return symbol(sym.RBRACE);
+            { System.out.print(" ) "); return symbol(sym.RPAREN);
             } 
             // fall through
           case 22: break;

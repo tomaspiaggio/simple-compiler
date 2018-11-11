@@ -10,5 +10,5 @@ if [ "$1" != "" ]; then
     done
     mv *.java $WD/src/main/java/
 else
-    echo "Missing jflex files enclosing directory. Example: ./compile-jflex.sh src/main/java/grammar/"
+    echo "Missing jflex files enclosing directory. Example: ./jflex-compile.sh src/main/java/grammar/"
 fi

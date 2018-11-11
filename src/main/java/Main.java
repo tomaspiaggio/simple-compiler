@@ -1,13 +1,9 @@
-import java_cup.parser;
-import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            parser p = new parser(new Lexer(new FileReader("/assets/test.txt")));
-            Object result = p.parse().value;
+            Parser p = new Parser();
         } catch (Exception e) {
-            /* do cleanup here -- possibly rethrow e */
             e.printStackTrace();
         }
     }
