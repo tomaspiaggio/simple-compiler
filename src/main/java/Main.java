@@ -1,10 +1,12 @@
+import java.io.FileReader;
+
 public class Main {
     public static void main(String[] args) {
         try {
-            System.out.println("Please type your arithmethic expression:");
-            Parser p = new Parser(new scanner());
-            p.parse();
-        } catch(Exception e) {
+            Parser p = new Parser(new Lexer(new FileReader("assets/test.txt")));
+            Object result = p.parse().value;
+        } catch (Exception e) {
+            /* do cleanup here -- possibly rethrow e */
             e.printStackTrace();
         }
     }

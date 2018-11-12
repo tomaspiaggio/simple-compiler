@@ -30,7 +30,7 @@ import java_cup.runtime.*;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>lcalc.flex</tt>
  */
-public class Lexer implements sym, java_cup.runtime.Scanner {
+class Lexer implements java_cup.runtime.Scanner {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -267,7 +267,7 @@ public class Lexer implements sym, java_cup.runtime.Scanner {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public Lexer(java.io.Reader in) {
+  Lexer(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -662,8 +662,8 @@ public class Lexer implements sym, java_cup.runtime.Scanner {
             // fall through
           case 14: break;
           case 4: 
-            { System.out.print("ID");
-                         return symbol(1, new Integer(1));
+            { System.out.print(yytext());
+                         return symbol(sym.ID, new Integer(1));
             } 
             // fall through
           case 15: break;
@@ -672,22 +672,34 @@ public class Lexer implements sym, java_cup.runtime.Scanner {
             } 
             // fall through
           case 16: break;
-          case 6: return symbol(sym.PLUS);
+          case 6: 
+            { System.out.print(" + "); return symbol(sym.PLUS);
+            } 
             // fall through
           case 17: break;
-          case 7: return symbol(sym.MINUS);
+          case 7: 
+            { System.out.print(" - "); return symbol(sym.MINUS);
+            } 
             // fall through
           case 18: break;
-          case 8: return symbol(sym.TIMES);
+          case 8: 
+            { System.out.print(" * "); return symbol(sym.TIMES);
+            } 
             // fall through
           case 19: break;
-          case 9: return symbol(sym.DIVIDE);
+          case 9: 
+            { System.out.print(" / "); return symbol(sym.DIVIDE);
+            } 
             // fall through
           case 20: break;
-          case 10: return symbol(sym.LPAREN);
+          case 10: 
+            { System.out.print(" ( "); return symbol(sym.LPAREN);
+            } 
             // fall through
           case 21: break;
-          case 11: return symbol(sym.RPAREN);
+          case 11: 
+            { System.out.print(" ) "); return symbol(sym.RPAREN);
+            } 
             // fall through
           case 22: break;
           default:
