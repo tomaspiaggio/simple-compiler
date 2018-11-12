@@ -1,30 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-interface Expr {
-    Object run(HashMap<String, Object> hm);
-}
-
-interface Condition {
-    boolean test(Expr e1, Expr e2, HashMap<String, Object> hm);
-}
-
-interface Operator {
-    int count(Expr e1, Expr e2, HashMap<String, Object> hm);
-}
-
-interface SimpleInstruction {
-    void run(HashMap<String, Object> hm);
-}
-
-interface WhileInstructionI extends SimpleInstruction {
-    void run(HashMap<String, Object> hm);
-}
-
-interface IfInstructionI extends SimpleInstruction {
-    void run(HashMap<String, Object> hm);
-}
-
 public class Main {
 
     private HashMap<String, Object> hm = new HashMap<>();
@@ -49,42 +25,13 @@ public class Main {
 
 }
 
-/**
- * VARS
- */
-class ID implements Expr {
-    String name;
-
-    public ID(String s) {
-        name = s;
-    }
-
-    public Object run(HashMap<String, Object> hm) {
-        return hm.get(name);
-    }
-}
-
-class AssignInstruction implements SimpleInstruction {
-    String name;
-    Expr val;
-
-    public AssignInstruction(String i, Expr e) {
-        name = i;
-        val = e;
-    }
-
-    public void run(HashMap<String, Object> hm) {
-        hm.put(name, val.run(hm));
-    }
-}
-
 
 /**
  * OPERATORS
  */
 class PlusOperator implements Operator {
 
-    public int count(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public int count(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -101,7 +48,7 @@ class PlusOperator implements Operator {
 
 class TimesOperator implements Operator {
 
-    public int count(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public int count(Expression e1, Expression e2, HashMap<String, Object> hm) {
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
         if (v1 instanceof Integer && v2 instanceof Integer) {
@@ -116,7 +63,7 @@ class TimesOperator implements Operator {
 
 class MinusOperator implements Operator {
 
-    public int count(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public int count(Expression e1, Expression e2, HashMap<String, Object> hm) {
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
         if (v1 instanceof Integer && v2 instanceof Integer) {
@@ -131,7 +78,7 @@ class MinusOperator implements Operator {
 
 class DivideOperator implements Operator {
 
-    public int count(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public int count(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -151,7 +98,7 @@ class DivideOperator implements Operator {
 
 class ModeOperator implements Operator {
 
-    public int count(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public int count(Expression e1, Expression e2, HashMap<String, Object> hm) {
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
 
@@ -169,12 +116,12 @@ class ModeOperator implements Operator {
     }
 }
 
-class OperatorExpression implements Expr {
+class OperatorExpression implements Expression {
 
-    Expr e, e2;
+    Expression e, e2;
     Operator o;
 
-    public OperatorExpression(Expr e, Operator o, Expr e2) {
+    public OperatorExpression(Expression e, Operator o, Expression e2) {
         this.e = e;
         this.e2 = e2;
         this.o = o;
@@ -188,7 +135,7 @@ class OperatorExpression implements Expr {
 /**
  * INT OPERATIONS
  */
-class IntExpression implements Expr {
+class IntExpression implements Expression {
     int value;
 
     public IntExpression(int e) {
@@ -200,29 +147,29 @@ class IntExpression implements Expr {
     }
 }
 
-class IntEnterExpression implements Expr {
+class IntEnterExpression implements Expression {
     public Object run(HashMap<String, Object> hm) {
         java.util.Scanner in = new java.util.Scanner(System.in);
         return in.nextInt();
     }
 }
 
-class PIntExpression implements Expr {
-    Expr expr;
+class PIntExpression implements Expression {
+    Expression expression;
 
-    public PIntExpression(Expr e) {
-        expr = e;
+    public PIntExpression(Expression e) {
+        expression = e;
     }
 
     public Object run(HashMap<String, Object> hm) {
-        return expr.run(hm);
+        return expression.run(hm);
     }
 }
 
-class UMinusExpression implements Expr {
-    Expr e;
+class UMinusExpression implements Expression {
+    Expression e;
 
-    public UMinusExpression(Expr e) {
+    public UMinusExpression(Expression e) {
         this.e = e;
     }
 
@@ -240,10 +187,10 @@ class UMinusExpression implements Expr {
 
 }
 
-class STRLengthExpression implements Expr {
-    Expr e;
+class STRLengthExpression implements Expression {
+    Expression e;
 
-    public STRLengthExpression(Expr e) {
+    public STRLengthExpression(Expression e) {
         this.e = e;
     }
 
@@ -262,10 +209,10 @@ class STRLengthExpression implements Expr {
 
 }
 
-class STRPositionExpression implements Expr {
-    Expr e, e2;
+class STRPositionExpression implements Expression {
+    Expression e, e2;
 
-    public STRPositionExpression(Expr e, Expr e2) {
+    public STRPositionExpression(Expression e, Expression e2) {
         this.e = e;
         this.e2 = e2;
     }
@@ -294,7 +241,7 @@ class STRPositionExpression implements Expr {
  * CONDITIONS
  */
 class EqCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -311,7 +258,7 @@ class EqCond implements Condition {
 }
 
 class LtCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -327,7 +274,7 @@ class LtCond implements Condition {
 }
 
 class LeCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -343,7 +290,7 @@ class LeCond implements Condition {
 }
 
 class GtCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -359,7 +306,7 @@ class GtCond implements Condition {
 }
 
 class GeCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -375,7 +322,7 @@ class GeCond implements Condition {
 }
 
 class NeCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -391,7 +338,7 @@ class NeCond implements Condition {
 }
 
 class StrEqCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -407,7 +354,7 @@ class StrEqCond implements Condition {
 }
 
 class StrNotEqCond implements Condition {
-    public boolean test(Expr e1, Expr e2, HashMap<String, Object> hm) {
+    public boolean test(Expression e1, Expression e2, HashMap<String, Object> hm) {
 
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
@@ -425,7 +372,7 @@ class StrNotEqCond implements Condition {
 /**
  * BOOLEAN OPERATIONS
  */
-class BooleanExpression implements Expr {
+class BooleanExpression implements Expression {
     Boolean value;
 
     public BooleanExpression(Boolean e) {
@@ -437,12 +384,12 @@ class BooleanExpression implements Expr {
     }
 }
 
-class ConditionBooleanExpression implements Expr {
+class ConditionBooleanExpression implements Expression {
 
-    Expr e, e2;
+    Expression e, e2;
     Condition c;
 
-    public ConditionBooleanExpression(Expr e, Condition c, Expr e2) {
+    public ConditionBooleanExpression(Expression e, Condition c, Expression e2) {
         this.e = e;
         this.c = c;
         this.e2 = e2;
@@ -453,53 +400,53 @@ class ConditionBooleanExpression implements Expr {
     }
 }
 
-class PBooleanExpression implements Expr {
-    Expr expr;
+class PBooleanExpression implements Expression {
+    Expression expression;
 
-    public PBooleanExpression(Expr e) {
-        expr = e;
+    public PBooleanExpression(Expression e) {
+        expression = e;
     }
 
     public Object run(HashMap<String, Object> hm) {
-        return expr.run(hm);
+        return expression.run(hm);
     }
 }
 
-class NegationBooleanExpression implements Expr {
-    Expr expr;
+class NegationBooleanExpression implements Expression {
+    Expression expression;
 
-    public NegationBooleanExpression(Expr e) {
-        expr = e;
+    public NegationBooleanExpression(Expression e) {
+        expression = e;
     }
 
     public Object run(HashMap<String, Object> hm) {
-        return !((Boolean) expr.run(hm));
+        return !((Boolean) expression.run(hm));
     }
 }
 
-class AndBooleanExpression implements Expr {
-    Expr expr, expr2;
+class AndBooleanExpression implements Expression {
+    Expression expression, expression2;
 
-    public AndBooleanExpression(Expr e, Expr e2) {
-        expr = e;
-        expr2 = e2;
+    public AndBooleanExpression(Expression e, Expression e2) {
+        expression = e;
+        expression2 = e2;
     }
 
     public Object run(HashMap<String, Object> hm) {
-        return (Boolean) expr.run(hm) && (Boolean) expr2.run(hm);
+        return (Boolean) expression.run(hm) && (Boolean) expression2.run(hm);
     }
 }
 
-class OrBooleanExpression implements Expr {
-    Expr expr, expr2;
+class OrBooleanExpression implements Expression {
+    Expression expression, expression2;
 
-    public OrBooleanExpression(Expr e, Expr e2) {
-        expr = e;
-        expr2 = e2;
+    public OrBooleanExpression(Expression e, Expression e2) {
+        expression = e;
+        expression2 = e2;
     }
 
     public Object run(HashMap<String, Object> hm) {
-        return (Boolean) expr.run(hm) || (Boolean) expr2.run(hm);
+        return (Boolean) expression.run(hm) || (Boolean) expression2.run(hm);
     }
 }
 
@@ -507,7 +454,7 @@ class OrBooleanExpression implements Expr {
  * STRING OPERATIONS
  */
 
-class StringExpression implements Expr {
+class StringExpression implements Expression {
     String value;
 
     public StringExpression(String e) {
@@ -519,17 +466,17 @@ class StringExpression implements Expr {
     }
 }
 
-class StrEnterExpression implements Expr {
+class StrEnterExpression implements Expression {
     public Object run(HashMap<String, Object> hm) {
         java.util.Scanner in = new java.util.Scanner(System.in);
         return in.next();
     }
 }
 
-class ConcatStringExpression implements Expr {
-    Expr s, s2;
+class ConcatStringExpression implements Expression {
+    Expression s, s2;
 
-    public ConcatStringExpression(Expr s, Expr s2) {
+    public ConcatStringExpression(Expression s, Expression s2) {
         this.s = s;
         this.s2 = s2;
     }
@@ -548,20 +495,20 @@ class ConcatStringExpression implements Expr {
     }
 }
 
-class SubStringExpression implements Expr {
-    Expr sExpr, posExpr, lengthExpr;
+class SubStringExpression implements Expression {
+    Expression sExpression, posExpression, lengthExpression;
 
-    public SubStringExpression(Expr s, Expr pos, Expr length) {
-        sExpr = s;
-        posExpr = pos;
-        lengthExpr = length;
+    public SubStringExpression(Expression s, Expression pos, Expression length) {
+        sExpression = s;
+        posExpression = pos;
+        lengthExpression = length;
     }
 
     public Object run(HashMap<String, Object> hm) {
 
-        Object v1 = sExpr.run(hm);
-        Object v2 = posExpr.run(hm);
-        Object v3 = lengthExpr.run(hm);
+        Object v1 = sExpression.run(hm);
+        Object v2 = posExpression.run(hm);
+        Object v3 = lengthExpression.run(hm);
 
         if (v1 instanceof String && v2 instanceof Integer && v3 instanceof Integer) {
             String s = (String) v1;
@@ -587,14 +534,14 @@ class SubStringExpression implements Expr {
 
 
 class OutputInstruction implements SimpleInstruction {
-    Expr expr;
+    Expression expression;
 
-    public OutputInstruction(Expr e) {
-        expr = e;
+    public OutputInstruction(Expression e) {
+        expression = e;
     }
 
     public void run(HashMap<String, Object> hm) {
-        System.out.println(expr.run(hm));
+        System.out.println(expression.run(hm));
     }
 }
 
@@ -622,10 +569,10 @@ class InstructionList {
 }
 
 class WhileInstruction implements WhileInstructionI {
-    Expr cond;
+    Expression cond;
     SimpleInstruction si;
 
-    public WhileInstruction(Expr c, SimpleInstruction s) {
+    public WhileInstruction(Expression c, SimpleInstruction s) {
         cond = c;
         si = s;
     }
@@ -638,10 +585,10 @@ class WhileInstruction implements WhileInstructionI {
 }
 
 class DoWhileInstruction implements WhileInstructionI {
-    Expr cond;
+    Expression cond;
     SimpleInstruction si;
 
-    public DoWhileInstruction(Expr c, SimpleInstruction s) {
+    public DoWhileInstruction(Expression c, SimpleInstruction s) {
         cond = c;
         si = s;
     }
@@ -655,10 +602,10 @@ class DoWhileInstruction implements WhileInstructionI {
 
 class IfInstruction implements IfInstructionI {
 
-    Expr condition;
+    Expression condition;
     SimpleInstruction simpleInstruction;
 
-    public IfInstruction(Expr condition, SimpleInstruction simpleInstruction) {
+    public IfInstruction(Expression condition, SimpleInstruction simpleInstruction) {
         this.condition = condition;
         this.simpleInstruction = simpleInstruction;
     }
@@ -672,11 +619,11 @@ class IfInstruction implements IfInstructionI {
 
 class IfElseInstruction implements IfInstructionI {
 
-    Expr condition;
+    Expression condition;
     SimpleInstruction simpleInstruction;
     SimpleInstruction simpleInstruction2;
 
-    public IfElseInstruction(Expr condition, SimpleInstruction simpleInstruction, SimpleInstruction simpleInstruction2) {
+    public IfElseInstruction(Expression condition, SimpleInstruction simpleInstruction, SimpleInstruction simpleInstruction2) {
         this.condition = condition;
         this.simpleInstruction = simpleInstruction;
         this.simpleInstruction2 = simpleInstruction2;

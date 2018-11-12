@@ -45,10 +45,10 @@ terminal String    STRING;
 
 
 /** Non-terminals **/
-non terminal Expr expr;
-non terminal Expr num_expr;
-non terminal Expr str_expr;
-non terminal Expr bool_expr;
+non terminal Expression expr;
+non terminal Expression num_expr;
+non terminal Expression str_expr;
+non terminal Expression bool_expr;
 
 non terminal Operator num_op;
 non terminal Condition num_rel;
