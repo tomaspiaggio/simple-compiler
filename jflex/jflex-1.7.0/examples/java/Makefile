@@ -26,7 +26,7 @@ lexer-output.txt: compile
 	$(JAVA) -cp $(CP) TestLexer TestLexer.java > lexer-output.txt
 
 
-compile: scanner parser unicode
+compile: Scanner parser unicode
 	$(JAVAC) $(JAVACFLAGS) JavaParser.java TestLexer.java
 
 parser: parser.java 
@@ -34,7 +34,7 @@ parser: parser.java
 parser.java: java12.cup
 	$(CUP) -interface java12.cup
 
-scanner: Scanner.java
+Scanner: Scanner.java
 
 Scanner.java: java.flex
 	$(JFLEX) java.flex

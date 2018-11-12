@@ -27,7 +27,7 @@ import java.io.*;
         }
       }
       for (int i = firstFilePos; i < argv.length; i++) {
-        ZeroLexer scanner = null;
+        ZeroLexer Scanner = null;
         try {
           FileInputStream stream = new FileInputStream(argv[i]);
           // the usual Reader:
@@ -36,11 +36,11 @@ import java.io.*;
           reader = new FunkyReader(reader);
           
           try {
-            scanner = new ZeroLexer(reader);
+            Scanner = new ZeroLexer(reader);
             do {
-              System.out.println(scanner.yylex());
-              System.out.println("--"+scanner.yytext()+"--");
-            } while (!scanner.zzAtEOF);
+              System.out.println(Scanner.yylex());
+              System.out.println("--"+Scanner.yytext()+"--");
+            } while (!Scanner.zzAtEOF);
           }
           catch (IOException e) {
             System.out.println("Expected IO exception");
@@ -54,11 +54,11 @@ import java.io.*;
           // now the wrapper for broken Readers:
           reader = new ZeroReader(reader);
           
-          scanner = new ZeroLexer(reader);
+          Scanner = new ZeroLexer(reader);
           do {
-            System.out.println(scanner.yylex());
-            System.out.println("--"+scanner.yytext()+"--");
-          } while (!scanner.zzAtEOF);
+            System.out.println(Scanner.yylex());
+            System.out.println("--"+Scanner.yytext()+"--");
+          } while (!Scanner.zzAtEOF);
 
         }
         catch (java.io.FileNotFoundException e) {

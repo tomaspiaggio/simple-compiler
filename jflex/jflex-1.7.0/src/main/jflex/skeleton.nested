@@ -15,7 +15,7 @@
 
   /* error messages for the codes above */
   private static final String ZZ_ERROR_MSG[] = {
-    "Unknown internal scanner error",
+    "Unknown internal Scanner error",
     "Error: could not match input",
     "Error: pushback value was too large"
   };
@@ -60,11 +60,11 @@
   private int yycolumn;
 
   /** 
-   * zzAtBOL == true iff the scanner is currently at the beginning of a line
+   * zzAtBOL == true iff the Scanner is currently at the beginning of a line
    */
   private boolean zzAtBOL = true;
 
-  /** zzAtEOF == true iff the scanner is at the EOF */
+  /** zzAtEOF == true iff the Scanner is at the EOF */
   private boolean zzAtEOF;
 
   /** denotes if the user-EOF-code has already been executed */
@@ -271,7 +271,7 @@
 
 
   /**
-   * Resets the scanner to read from a new input stream.
+   * Resets the Scanner to read from a new input stream.
    * Does not close the old reader.
    *
    * All internal variables are reset, the old input stream 
@@ -353,13 +353,13 @@
   /**
    * Reports an error that occured while scanning.
    *
-   * In a wellformed scanner (no or only correct usage of 
+   * In a wellformed Scanner (no or only correct usage of
    * yypushback(int) and a match-all fallback rule) this method 
    * will only be called with things that "Can't Possibly Happen".
    * If this method is called, something is seriously wrong
-   * (e.g. a JFlex bug producing a faulty scanner etc.).
+   * (e.g. a JFlex bug producing a faulty Scanner etc.).
    *
-   * Usual syntax/scanner level error handling should be done
+   * Usual syntax/Scanner level error handling should be done
    * in error fallback rules.
    *
    * @param   errorCode  the code of the errormessage to display

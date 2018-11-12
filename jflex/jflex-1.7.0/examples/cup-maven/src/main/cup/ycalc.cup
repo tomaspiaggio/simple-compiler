@@ -81,7 +81,7 @@ parser code {:
    
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
    
-/* Terminals (tokens returned by the scanner).  
+/* Terminals (tokens returned by the Scanner).
 
    Terminals that have no value are listed first and then terminals
    that do have an value, in this case an integer value, are listed on
@@ -216,7 +216,7 @@ non terminal Integer    expr, factor, term;
    production with its lhs side needs to be found and followed.  The
    next rhs has no non terminals.  So the grammar ends here and can go
    back up.  When it goes back up it will bring the value that was
-   retrieved when the scanner encounter the token 'NUMBER'.  'RESULT'
+   retrieved when the Scanner encounter the token 'NUMBER'.  'RESULT'
    is assigned 'n', which refers to 'NUMBER', as the action for this
    production.  The same action occurs for 'ID', except the 'i' is
    used to refer to 'ID'.  'ID' is also the only thing on the rhs of

@@ -199,8 +199,8 @@ line:33 col:51 --;--SEMICOLON--
 token: line 33, column 51, sym: 13
 line:34 col:9 --Scanner--IDENTIFIER--
 token: line 34, column 9, sym: 98, value: 'Scanner'
-line:34 col:17 --scanner--IDENTIFIER--
-token: line 34, column 17, sym: 98, value: 'scanner'
+line:34 col:17 --Scanner--IDENTIFIER--
+token: line 34, column 17, sym: 98, value: 'Scanner'
 line:34 col:25 --=--EQ--
 token: line 34, column 25, sym: 18
 line:34 col:27 --new--NEW--
@@ -251,8 +251,8 @@ line:38 col:11 --s--IDENTIFIER--
 token: line 38, column 11, sym: 98, value: 's'
 line:38 col:13 --=--EQ--
 token: line 38, column 13, sym: 18
-line:38 col:15 --scanner--IDENTIFIER--
-token: line 38, column 15, sym: 98, value: 'scanner'
+line:38 col:15 --Scanner--IDENTIFIER--
+token: line 38, column 15, sym: 98, value: 'Scanner'
 line:38 col:22 --.--DOT--
 token: line 38, column 22, sym: 12
 line:38 col:23 --debug_next_token--IDENTIFIER--

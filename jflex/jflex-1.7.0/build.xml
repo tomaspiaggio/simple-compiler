@@ -87,7 +87,7 @@
     <copy file="${output.jar.name}" todir="${lib.dir}" />
   </target>
 
-  <target name="compile" depends="-generate-scanner,-generate-parser"
+  <target name="compile" depends="-generate-scanner.Scanner,-generate-parser"
           description="generate sources and compile all non-test classes">
     <mkdir dir="${compile.output.dir}" />
     <javac destdir="${compile.output.dir}"
@@ -128,7 +128,7 @@
     </copy>
   </target>
 
-  <target name="-generate-scanner">
+  <target name="-generate-Scanner">
     <taskdef classname="jflex.anttask.JFlexTask" 
              name="jflex" classpath="${bootstrap.jflex.jar}"/>
     <mkdir dir="${generated.sources.dir}"/>

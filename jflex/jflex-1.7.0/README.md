@@ -1,6 +1,6 @@
 # JFlex 1.7.0
 
-This directory contains JFlex, a fast scanner generator for Java.
+This directory contains JFlex, a fast Scanner generator for Java.
 
 To run JFlex, run `bin/jflex` from the command line or double click on the
 JFLex jar file in the `lib/` directory. You need JDK 1.7 installed and set up.

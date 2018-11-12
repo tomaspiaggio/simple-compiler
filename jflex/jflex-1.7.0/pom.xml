@@ -11,8 +11,8 @@
   <name>JFlex</name>
   <inceptionYear>1998</inceptionYear>
   <description>
-    JFlex is a lexical analyzer generator (also known as
-    scanner generator) for Java™, written in Java.
+      JFlex is a lexical analyzer generator (also known as
+      Scanner generator) for Java™, written in Java.
   </description>
   <licenses>
     <license>

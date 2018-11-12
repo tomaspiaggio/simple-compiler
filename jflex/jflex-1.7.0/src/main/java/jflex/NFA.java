@@ -28,8 +28,8 @@ import java.util.Map;
 public final class NFA {
 
   /**
-   * table[current_state][next_char] is the set of states that can be reached from current_state
-   * with an input next_char
+   * table[current_state][nextChar] is the set of states that can be reached from current_state
+   * with an input nextChar
    */
   StateSet[][] table;
 

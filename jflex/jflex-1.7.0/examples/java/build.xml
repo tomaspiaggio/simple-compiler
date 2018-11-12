@@ -1,4 +1,4 @@
-<project name="java scanner" default="run">
+<project name="java Scanner" default="run">
 
   <taskdef classname="jflex.anttask.JFlexTask" name="jflex" />
   <taskdef classname="java_cup.anttask.CUPTask" name="cup" />
@@ -12,15 +12,15 @@
       <arg line="UnicodeEscapes.java"/> 
       <arg line="parser.java"/> 
       <arg line="sym.java"/> 
-      <arg line="Scanner.java"/> 
+      <arg line="Scanner.java"/>
     </java>
   </target>
 
-  <target name="compile" depends="scanner,unicode,cup">
+  <target name="compile" depends="scanner.Scanner,unicode,cup">
     <javac srcdir="." destdir="." />
   </target>
 
-  <target name="scanner"> <jflex file="java.flex"/> </target>
+  <target name="Scanner"> <jflex file="java.flex"/> </target>
 
   <target name="unicode"> <jflex file="unicode.flex"/> </target>
 
@@ -29,7 +29,7 @@
   </target>
 
   <target name="genclean">
-    <delete file="Scanner.java"/>
+    <delete file="scanner.Scanner.java"/>
     <delete file="UnicodeEscapes.java"/>
     <delete file="sym.java" />
     <delete file="parser.java" />

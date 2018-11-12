@@ -30,7 +30,10 @@ import java_cup.runtime.*;
    The name of the class JFlex will create will be Lexer.
    Will write the code to the file Lexer.java.
 */
+%public
 %class Lexer
+%cup
+%implements sym
 
 /*
   The current line number can be accessed with the variable yyline

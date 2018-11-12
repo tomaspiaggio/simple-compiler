@@ -44,7 +44,7 @@
 - removed the "switch" and "table" code generation options
 - Option `--noinputstreamctor` deprecated.
   By default no InputStream constructor is included in the generated
-  scanner.  The capability to include one is deprecated and will be
+  Scanner.  The capability to include one is deprecated and will be
   removed in JFlex 1.7.
   
 ## [JFlex 1.5.1](https://github.com/jflex-de/jflex/milestone/13) (Mar 21, 2014)
@@ -73,19 +73,19 @@
 - new `\R` meta character matches any newline:
   `"\r\n" | [\n\r\u000B\u000C\u0085\u2028\u2029]`.
 - new option --noinputstreamctor to not include an InputStream
-  constructor in the generated scanner.
+  constructor in the generated Scanner.
 - `%include <file>` can now be used in the rules section (#117)
 - yychar and zzAtBOL should be reset for nested input streams (#107 & #108 )
 - fixed bug #109 (could not match input for empty string matches.)
 - fixed bug #112 & #119 (properly update zzFin when reallocating zzBuffer)
-- fixed bug #115 (noncompileable scanner generation when default locale is Turkish)
+- fixed bug #115 (noncompileable Scanner generation when default locale is Turkish)
 - fixed bug #114 (zzEOFDone not included with pushed nested stream state)
 - fixed bug #105 (can't build examples/java/)
 - fixed bug #106 (impossible char class range should trigger syntax error)
 
 ## [JFlex 1.4.3](https://github.com/jflex-de/jflex/milestone/15) (Jan 31, 2009)
 - fixed bug #100 (lookahead syntax error)
-- fixed bug #97 (min_int in Java example scanner)
+- fixed bug #97 (min_int in Java example Scanner)
 - fixed bug #96 (zzEOFDone not reset in yyreset(Reader))
 - fixed bug #95 (%type and %int at the same time should produce error msg)
 
@@ -282,11 +282,11 @@
 - New upto operator ~ for regexps. 
 - Customizable buffer size (%buffer). 
 - New char yycharat(int) for efficient access to single characters in matched text. 
-- Split up of too large lex tables for even larger scanner sizes. 
+- Split up of too large lex tables for even larger Scanner sizes. 
 - New additional external skeleton with support for nested input streams. 
 - JLex compatibility: BOL ^ and EOL $ use unicode line separators as in 
   http://www.unicode.org/unicode/reports/tr18/tr18-5.1.html. 
-- New resetStream method for reusing scanner objects. 
+- New resetStream method for reusing Scanner objects. 
 _ BYacc/J support (%byaccj) + BYacc/J example. 
 - Include files in lexer specs (%include). 
 - New --dump switch for a dump of the generated charclasses, NFA, DFA, and minimized DFA tables. 

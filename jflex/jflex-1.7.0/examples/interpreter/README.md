@@ -12,7 +12,7 @@ programming language (called "AS"). It uses JFlex and CUP.
   They also contain context condition checking and the interpreter.
 - `Symtab.java`, `SymtabEntry.java, STEfun.java, STEvar.java implement
   the symbol table.
-- `scanner.lex` and `parser.cup` contain the scanner and parser.
+- `Scanner.lex` and `parser.cup` contain the Scanner and parser.
 - `example.as` is an example program in AS
 
 'ant run' or the Makefile runs jflex, cup, javac and the

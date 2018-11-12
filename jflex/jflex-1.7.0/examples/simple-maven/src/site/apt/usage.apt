@@ -19,7 +19,7 @@ About this project
 	modifications, to make it a bit more readable.
 	It does nothing really useful, because there is no parser for
 	the toy programming language. It's just a demonstration how a
-	small simple scanner looks like.
+	small simple Scanner looks like.
 	
 	
 * JFlex
@@ -45,7 +45,7 @@ Usage
 
 	The jflex-maven-plugin will read the grammar 
 	<<<src/main/jflex/simple.jflex>>>
-	and generate a Java scanner <<<Yylex.java>>>
+	and generate a Java Scanner <<<Yylex.java>>>
 	in <<<target/generated-sources/flex>>>
 
 	This is defined by the following section
@@ -69,28 +69,28 @@ Usage
   </build>
 +------------
 
-	By default, the jflex-maven-plugin generates a scanner/parser for every file
+	By default, the jflex-maven-plugin generates a Scanner/parser for every file
 	in <<<src/main/jflex/>>>.
 
 
 * mvn test
 
-	This goal test the generated scanner (if required, the lexer will be 
+	This goal test the generated Scanner (if required, the lexer will be
 	generated and all Java classes will be compiled)
 	by running all tests in <<<src/test/java>>>.
 	
 	There is only one test in <<<src/test/java/YylexTest.java>>>.
 	In this test, 
-	the scanner is run with the input file <<<src/test/resources/test.txt>>>.
+	the Scanner is run with the input file <<<src/test/resources/test.txt>>>.
 	
-	By default, the scanner outputs debugging information about each 
+	By default, the Scanner outputs debugging information about each
 	returned token to <<<System.out>>> until the end of file is reached, 
 	or an error occurs.
 	But in the test, the output is redirected into <<<target/output.actual>>>.
 	
 	The test is successful if every line match
 	with <<<src/test/resources/output.good>>>,
-	which is the expected scanner debugging information.
+	which is the expected Scanner debugging information.
 	
 
 References

@@ -1,7 +1,7 @@
 JFlex: Complex example (with CUP)
 ===============================
 
-This directory contains a scanner and parser for the Java programming language (Java 1.2).
+This directory contains a Scanner and parser for the Java programming language (Java 1.2).
 
 ## Prerequisite
 
@@ -25,7 +25,7 @@ The parser can be tested with:
 java JavaParser <inputfiles>
 ```
 
-The scanner (without parser attached) can be test with:
+The Scanner (without parser attached) can be test with:
 
 ```
 java TestLexer <inputfiles>
@@ -46,6 +46,6 @@ java TestLexer <inputfiles>
 * `JavaParser.java`
   a simple main class to run the parser (no other useful output though)
 * `TestLexer.java`
-  a simple test driver for the scanner, produces debug output
+  a simple test driver for the Scanner, produces debug output
 * `lexer-output.good`
   Golden output file corresponding to `TestLexer.java`.

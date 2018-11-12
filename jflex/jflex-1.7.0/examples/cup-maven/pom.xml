@@ -4,7 +4,7 @@
   <groupId>de.flex.examples</groupId>
   <artifactId>cup-maven</artifactId>
   <version>1.0</version>
-  <name>A scanner for calculator.</name>
+  <name>A Scanner for calculator.</name>
   <description>It is the example from the JLex website with some small
 		modifications, to make it a bit more readable.
 

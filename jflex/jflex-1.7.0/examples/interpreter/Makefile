@@ -46,8 +46,8 @@ all: Yylex.java parser.java $(FILE:java=class)
 clean:
 	rm -f *.class *~ *.bak Yylex.java parser.java sym.java
 
-Yylex.java: scanner.flex
-	$(JFLEX) scanner.flex
+Yylex.java: Scanner.flex
+	$(JFLEX) Scanner.flex
 
 parser.java: parser.cup
 	$(CUP) -interface < parser.cup
