@@ -109,7 +109,10 @@ booleanExpression ::= TRUE                                   {: RESULT = new exp
 
 instruction ::= assignInstruction:si                         {: RESULT = si; :}
         | ifInstruction:si                                   {: RESULT = si; :}
-        | BEGIN instructionList:si END                       {: RESULT = new instruction.impl.BeginEndInstruction(si); :}
+        | BEGIN instructionList:si END                       {:
+                                                                System.out.println("The process has begun");
+                                                                RESULT = new instruction.impl.BeginEndInstruction(si);
+                                                             :}
         | outputInstruction:si                               {: RESULT = si; :}
         | EXIT                                               {: System.exit(0); :}
         ;
@@ -118,7 +121,10 @@ instructionList ::= instructionList:i SEMI instruction:si    {: i.add(si); RESUL
         | instruction:si                                     {: RESULT = new instruction.impl.InstructionList(si); :}
         ;
 
-assignInstruction ::= IDENT:i ASSIGN expression:e            {: RESULT = new instruction.AssignInstruction(i,e); :}
+assignInstruction ::= IDENT:i ASSIGN expression:e            {:
+                                                                System.out.println("Assigned variable " + i);
+                                                                RESULT = new instruction.AssignInstruction(i,e);
+                                                             :}
         ;
 
 ifInstruction ::= IF booleanExpression:c THEN instruction:s                   {: RESULT = new instruction.impl.IfInstruction(c, s); :}

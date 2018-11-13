@@ -16,5 +16,5 @@ begin
 	write(readstr);
 
 	write("enter int, I will write it");
-	write(readint)
+	write(readint);
 end
