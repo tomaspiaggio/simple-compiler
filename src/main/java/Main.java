@@ -50,7 +50,7 @@ class Interpreter extends Reader {
     private Reader askInput() {
         System.out.print(">>> ");
         Scanner s = new Scanner(System.in);
-        return new StringReader(s.next());
+        return new StringReader("\n\t" + s.next());
     }
 
     @Override

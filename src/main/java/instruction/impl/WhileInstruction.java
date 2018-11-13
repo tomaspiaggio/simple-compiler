@@ -1,16 +1,16 @@
 package instruction.impl;
 
 import expression.Expression;
-import instruction.SimpleInstruction;
+import instruction.Instruction;
 import instruction.WhileInstructionI;
 
 import java.util.HashMap;
 
 public class WhileInstruction implements WhileInstructionI {
     Expression cond;
-    SimpleInstruction si;
+    Instruction si;
 
-    public WhileInstruction(Expression c, SimpleInstruction s) {
+    public WhileInstruction(Expression c, Instruction s) {
         cond = c;
         si = s;
     }

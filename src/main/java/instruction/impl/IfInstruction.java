@@ -2,23 +2,23 @@ package instruction.impl;
 
 import expression.Expression;
 import instruction.IfInstructionI;
-import instruction.SimpleInstruction;
+import instruction.Instruction;
 
 import java.util.HashMap;
 
 public class IfInstruction implements IfInstructionI {
 
     Expression condition;
-    SimpleInstruction simpleInstruction;
+    Instruction instruction;
 
-    public IfInstruction(Expression condition, SimpleInstruction simpleInstruction) {
+    public IfInstruction(Expression condition, Instruction instruction) {
         this.condition = condition;
-        this.simpleInstruction = simpleInstruction;
+        this.instruction = instruction;
     }
 
     public void run(HashMap<String, Object> hm) {
         if ((Boolean) condition.run(hm)) {
-            simpleInstruction.run(hm);
+            instruction.run(hm);
         }
     }
 }

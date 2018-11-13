@@ -1,10 +1,10 @@
 package instruction.impl;
 
-import instruction.SimpleInstruction;
+import instruction.Instruction;
 
 import java.util.HashMap;
 
-public class BeginEndInstruction implements SimpleInstruction {
+public class BeginEndInstruction implements Instruction {
     private InstructionList instructions;
 
     public BeginEndInstruction(InstructionList instructions) {

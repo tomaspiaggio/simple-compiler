@@ -2,27 +2,27 @@ package instruction.impl;
 
 import expression.Expression;
 import instruction.IfInstructionI;
-import instruction.SimpleInstruction;
+import instruction.Instruction;
 
 import java.util.HashMap;
 
 public class IfElseInstruction implements IfInstructionI {
 
     Expression condition;
-    SimpleInstruction simpleInstruction;
-    SimpleInstruction simpleInstruction2;
+    Instruction instruction;
+    Instruction instruction2;
 
-    public IfElseInstruction(Expression condition, SimpleInstruction simpleInstruction, SimpleInstruction simpleInstruction2) {
+    public IfElseInstruction(Expression condition, Instruction instruction, Instruction instruction2) {
         this.condition = condition;
-        this.simpleInstruction = simpleInstruction;
-        this.simpleInstruction2 = simpleInstruction2;
+        this.instruction = instruction;
+        this.instruction2 = instruction2;
     }
 
     public void run(HashMap<String, Object> hm) {
         if ((Boolean) condition.run(hm)) {
-            simpleInstruction.run(hm);
+            instruction.run(hm);
         } else {
-            simpleInstruction2.run(hm);
+            instruction2.run(hm);
         }
     }
 }

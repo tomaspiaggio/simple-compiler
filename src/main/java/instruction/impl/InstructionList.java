@@ -1,25 +1,25 @@
 package instruction.impl;
 
-import instruction.SimpleInstruction;
+import instruction.Instruction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class InstructionList {
-    private List<SimpleInstruction> simpleInstructions;
+    private List<Instruction> instructions;
 
-    public InstructionList(SimpleInstruction s) {
-        simpleInstructions = new ArrayList<SimpleInstruction>();
-        simpleInstructions.add(s);
+    public InstructionList(Instruction s) {
+        instructions = new ArrayList<Instruction>();
+        instructions.add(s);
     }
 
-    public void add(SimpleInstruction s) {
-        simpleInstructions.add(s);
+    public void add(Instruction s) {
+        instructions.add(s);
     }
 
     public void run(HashMap<String, Object> hm) {
-        for (SimpleInstruction si : simpleInstructions) {
+        for (Instruction si : instructions) {
             si.run(hm);
         }
     }

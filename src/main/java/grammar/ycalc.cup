@@ -31,20 +31,20 @@ terminal           AND, OR, NOT, TRUE, FALSE; // boolean
 // flow
 terminal           BEGIN, END, EXIT;
 terminal           IF, THEN, ELSE;
-terminal           WHILE, DO;
+terminal           WHILE, DO; // TODO: REMOVE
 
-terminal           PRINT, READINT, LENGTH, POSITION, READSTR, CONCATENATE, SUBSTRING;  // commands
+terminal           PRINT, READINT, LENGTH, POSITION, READSTR, CONCATENATE, SUBSTRING;  // TODO: REMOVE (LENGTH, POSITION, CONCATENATE, SUBSTRING) CHANGE (PRINT -> WRITE, READINT -> READ, READSTR -> READ)
 terminal           ASSIGN;
 terminal   	       EQ, LT, LE, GT, GE, NE; // num_rel
-terminal    	   STREQ, STRNOTEQ; //str_rel
+terminal    	   STREQ, STRNOTEQ; //str_rel // TODO: REMOVE
 
-terminal           SEMI, COMMA, PLUS, MINUS, TIMES, DIVIDE, MODE, LPAREN, RPAREN;
-terminal Integer   NUM;
+terminal           SEMI, COMMA, PLUS, MINUS, TIMES, DIVIDE, MODE, LPAREN, RPAREN; // TODO: REMOVE (LPAREN, RPAREN)
+terminal Integer   NUM; // TODO: ADD (DOUBLE)
 terminal String    IDENT;
 terminal String    STRING;
 
 
-/** Non-terminals **/
+/** Non-terminals **/ // TODO: ADD (DOUBLE EXPRESSION)
 non terminal Expression expr;
 non terminal Expression num_expr;
 non terminal Expression str_expr;
@@ -54,13 +54,13 @@ non terminal Operator num_op;
 non terminal Condition num_rel;
 non terminal Condition str_rel;
 
-non terminal SimpleInstruction simple_instr;
+non terminal Instruction instruction;
 non terminal InstructionList instr;
 
-non terminal SimpleInstruction assign_stat;
-non terminal SimpleInstruction if_stat;
-non terminal SimpleInstruction while_stat;
-non terminal SimpleInstruction output_stat;
+non terminal Instruction assign_stat;
+non terminal Instruction if_stat;
+non terminal Instruction while_stat; // TODO: REMOVE
+non terminal Instruction output_stat;
 non terminal Main program;
 
 /** Precedence */
@@ -83,19 +83,20 @@ num_op ::= PLUS             {: RESULT = new PlusOperator(); :}
          | DIVIDE           {: RESULT = new DivideOperator(); :}
          | MODE             {: RESULT = new ModeOperator(); :}
          ;
-
+// TODO: ADD DOUBLE OPS (THAT DO NOT MATCH WITH INTEGER OPS)
 expr ::= IDENT:i            {: RESULT = new ID(i); :}
             |num_expr:e     {: RESULT = e; :}
             |str_expr:e     {: RESULT = e; :}
             ;
-
+// TODO: CHANGE READINT -> READ, READSTR -> READ
+// TODO: REMOVE LPAREN, RPAREN, POSITION
 num_expr ::=  NUM:e
                 {:
                     RESULT = new IntExpression(e.intValue());
                 :}
             | READINT
                  {:
-                    RESULT = new IntEnterExpression();
+                    RESULT = new ReadExpression();
                  :}
             | MINUS expr:e
                 {:
@@ -125,7 +126,7 @@ str_expr ::=  STRING:s
                 :}
              | READSTR
                 {:
-                    RESULT = new StringEnterExpression();
+                    RESULT = new ReadExpression();
                 :}
             | CONCATENATE LPAREN expr:s COMMA expr:s2 RPAREN
                 {:
@@ -159,7 +160,7 @@ bool_expr ::= TRUE                               {: RESULT = new BooleanExpressi
             | expr:s str_rel:o expr:s2           {: RESULT = new ConditionBooleanExpression(s, o, s2); :}
             ;
 
-simple_instr ::= assign_stat:si                  {: RESULT = si; :}
+instruction ::= assign_stat:si                  {: RESULT = si; :}
               | if_stat:si                       {: RESULT = si; :}
               | while_stat:si                    {: RESULT = si; :}
               | BEGIN instr:si END               {: RESULT = new BeginEndInstruction(si); :}
@@ -167,19 +168,19 @@ simple_instr ::= assign_stat:si                  {: RESULT = si; :}
               | EXIT                             {: System.exit(0); :}
               ;
 
-instr ::= instr:i SEMI simple_instr:si           {: i.add(si); RESULT = i; :}
-        | simple_instr:si                        {: RESULT = new InstructionList(si); :}
+instr ::= instr:i SEMI instruction:si           {: i.add(si); RESULT = i; :}
+        | instruction:si                        {: RESULT = new InstructionList(si); :}
         ;
 
 assign_stat ::= IDENT:i ASSIGN expr:e          {: RESULT = new AssignInstruction(i,e); :}
                 ;
 
-if_stat ::= IF bool_expr:c THEN simple_instr:s                          {: RESULT = new IfInstruction(c, s); :}
-            | IF bool_expr:c THEN simple_instr:s ELSE simple_instr:s2   {:  RESULT = new IfElseInstruction(c, s, s2); :}
+if_stat ::= IF bool_expr:c THEN instruction:s                          {: RESULT = new IfInstruction(c, s); :}
+            | IF bool_expr:c THEN instruction:s ELSE instruction:s2   {:  RESULT = new IfElseInstruction(c, s, s2); :}
             ;
 
-while_stat ::= WHILE bool_expr:c DO simple_instr:s       {: RESULT = new WhileInstruction(c, s); :}
-            | DO simple_instr:s WHILE bool_expr:c        {: RESULT = new DoWhileInstruction(c, s); :}
+while_stat ::= WHILE bool_expr:c DO instruction:s       {: RESULT = new WhileInstruction(c, s); :}
+            | DO instruction:s WHILE bool_expr:c        {: RESULT = new DoWhileInstruction(c, s); :}
             ;
 
 output_stat ::= PRINT LPAREN expr:e  RPAREN               {: RESULT = new OutputInstruction(e); :}

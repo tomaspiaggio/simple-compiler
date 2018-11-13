@@ -1,11 +1,11 @@
 package instruction.impl;
 
 import expression.Expression;
-import instruction.SimpleInstruction;
+import instruction.Instruction;
 
 import java.util.HashMap;
 
-public class OutputInstruction implements SimpleInstruction {
+public class OutputInstruction implements Instruction {
     Expression expression;
 
     public OutputInstruction(Expression e) {
