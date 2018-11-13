@@ -47,7 +47,7 @@ STRING = \"([^\\\"]|\\.)*\"
     "while"           { return symbol(sym.WHILE); }
     "do"              { return symbol(sym.DO); }
 
-    "print"           { return symbol(sym.PRINT); }
+    "write"           { return symbol(sym.PRINT); }
     "readint"         { return symbol(sym.READINT); }
     "length"          { return symbol(sym.LENGTH); }
     "position"        { return symbol(sym.POSITION); }
