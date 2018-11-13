@@ -80,15 +80,12 @@ expression ::= IDENT:i               {: RESULT = new expression.ID(i); :}
          |inputExpression:e          {: RESULT = e; :}
          ;
 
-inputExpression ::= READ LPAREN expression:e RPAREN  {: RESULT = new expression.impl.ReadExpression(); :}
+inputExpression ::= READ LPAREN expression:e RPAREN    {: RESULT = new expression.impl.ReadExpression(); :}
             ;
 
-numberExpression ::= INT:e          {: RESULT = new expression.impl.IntExpression(e.intValue()); :}
-        | DOUBLE:e                  {: RESULT = new expression.impl.DoubleExpression(e.doubleValue()); :}
-        | expression:e numberOperation:o expression:e2
-            {:
-                RESULT = new expression.impl.OperatorExpression(e, o, e2);
-            :}
+numberExpression ::= INT:e                             {: RESULT = new expression.impl.IntExpression(e.intValue()); :}
+        | DOUBLE:e                                     {: RESULT = new expression.impl.DoubleExpression(e.doubleValue()); :}
+        | expression:e numberOperation:o expression:e2 {: RESULT = new expression.impl.OperatorExpression(e, o, e2); :}
         ;
 
 stringExpression ::=  STRING:s {: RESULT = new expression.impl.StringExpression(s.substring(1, s.length()-1)); :}
