@@ -4,24 +4,23 @@ import expression.Expression;
 
 import java.util.HashMap;
 
-public class StringLengthExpression implements Expression {
+public class UMinusIntExpression implements Expression {
     Expression e;
 
-    public StringLengthExpression(Expression e) {
+    public UMinusIntExpression(Expression e) {
         this.e = e;
     }
 
     public Object run(HashMap<String, Object> hm) {
 
         Object v = e.run(hm);
-        if (v instanceof String) {
-            return ((String) v).length();
+        if (v instanceof Integer) {
+            return -((Integer) v);
         } else {
             System.out.println("Error: wrong objects type");
             System.exit(1);
             return 0;
         }
-
     }
 
 }

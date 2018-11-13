@@ -23,7 +23,8 @@ import java_cup.runtime.*;
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
-NUM = [0-9]+
+DOUBLE = [0-9]+.[0-9]
+INT = [0-9]+
 IDENT = [A-Za-z_][A-Za-z_0-9]*
 STRING = \"([^\\\"]|\\.)*\"
 
@@ -44,19 +45,9 @@ STRING = \"([^\\\"]|\\.)*\"
     "if"              { return symbol(sym.IF); }
     "then"            { return symbol(sym.THEN); }
     "else"            { return symbol(sym.ELSE); }
-    "while"           { return symbol(sym.WHILE); }
-    "do"              { return symbol(sym.DO); }
 
     "write"           { return symbol(sym.PRINT); }
-    "readint"         { return symbol(sym.READINT); }
-    "length"          { return symbol(sym.LENGTH); }
-    "position"        { return symbol(sym.POSITION); }
-    "readstr"         { return symbol(sym.READSTR); }
-    "concatenate"     { return symbol(sym.CONCATENATE); }
-    "substring"       { return symbol(sym.SUBSTRING); }
-
-    "==="              { return symbol(sym.STREQ); }
-    "!=="              { return symbol(sym.STRNOTEQ); }
+    "read"            { return symbol(sym.READ); }
 
     "=="              { return symbol(sym.EQ); }
     "="               {return symbol(sym.ASSIGN); }
@@ -76,7 +67,8 @@ STRING = \"([^\\\"]|\\.)*\"
     "%"                { return symbol(sym.MODE);  }
     "/"                { return symbol(sym.DIVIDE); }
 
-    {NUM}      { return symbol(sym.NUM, new Integer(yytext())); }
+    {INT}         { return symbol(sym.INT, new Integer(yytext())); }
+    {DOUBLE}      { return symbol(sym.DOUBLE, new Double(yytext())); }
     {IDENT}       { return symbol(sym.IDENT, new String(yytext()));}
     {STRING}      { return symbol(sym.STRING, new String(yytext())); }
 

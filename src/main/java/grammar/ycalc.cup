@@ -31,35 +31,37 @@ terminal           AND, OR, NOT, TRUE, FALSE; // boolean
 // flow
 terminal           BEGIN, END, EXIT;
 terminal           IF, THEN, ELSE;
-terminal           WHILE, DO; // TODO: REMOVE
 
-terminal           PRINT, READINT, LENGTH, POSITION, READSTR, CONCATENATE, SUBSTRING;  // TODO: REMOVE (LENGTH, POSITION, CONCATENATE, SUBSTRING) CHANGE (PRINT -> WRITE, READINT -> READ, READSTR -> READ)
+terminal           PRINT, READ;
 terminal           ASSIGN;
-terminal   	       EQ, LT, LE, GT, GE, NE; // num_rel
-terminal    	   STREQ, STRNOTEQ; //str_rel // TODO: REMOVE
+terminal   	       EQ, LT, LE, GT, GE, NE; // int_rel
 
-terminal           SEMI, COMMA, PLUS, MINUS, TIMES, DIVIDE, MODE, LPAREN, RPAREN; // TODO: REMOVE (LPAREN, RPAREN)
-terminal Integer   NUM; // TODO: ADD (DOUBLE)
+terminal           SEMI, PLUS, MINUS, TIMES, DIVIDE, MODE, LPAREN, RPAREN;
+terminal Integer   INT;
+terminal Double    DOUBLE;
 terminal String    IDENT;
 terminal String    STRING;
 
 
-/** Non-terminals **/ // TODO: ADD (DOUBLE EXPRESSION)
+/** Non-terminals **/
 non terminal Expression expr;
-non terminal Expression num_expr;
+non terminal Expression int_expr;
+non terminal Expression double_expr;
 non terminal Expression str_expr;
 non terminal Expression bool_expr;
 
-non terminal Operator num_op;
-non terminal Condition num_rel;
-non terminal Condition str_rel;
+non terminal Operator int_op;
+non terminal Condition int_rel;
+
+non terminal Operator double_op;
+non terminal Condition double_rel;
 
 non terminal Instruction instruction;
 non terminal InstructionList instr;
 
 non terminal Instruction assign_stat;
 non terminal Instruction if_stat;
-non terminal Instruction while_stat; // TODO: REMOVE
+//non terminal Instruction while_stat;
 non terminal Instruction output_stat;
 non terminal Main program;
 
@@ -77,44 +79,48 @@ start with program;
 /** ============= GRAMMAR ============= */
 
 /** done */
-num_op ::= PLUS             {: RESULT = new PlusOperator(); :}
-         | MINUS            {: RESULT = new MinusOperator(); :}
-         | TIMES            {: RESULT = new TimesOperator(); :}
-         | DIVIDE           {: RESULT = new DivideOperator(); :}
-         | MODE             {: RESULT = new ModeOperator(); :}
+int_op ::= PLUS             {: RESULT = new PlusIntOperator(); :}
+         | MINUS            {: RESULT = new MinusIntOperator(); :}
+         | TIMES            {: RESULT = new TimesIntOperator(); :}
+         | DIVIDE           {: RESULT = new DivideIntOperator(); :}
+         | MODE             {: RESULT = new ModeIntOperator(); :}
          ;
-// TODO: ADD DOUBLE OPS (THAT DO NOT MATCH WITH INTEGER OPS)
+
+double_op ::= PLUS          {: RESULT = new PlusDoubleOperator(); :}
+         | MINUS            {: RESULT = new MinusDoubleOperator(); :}
+         | TIMES            {: RESULT = new TimesDoubleOperator(); :}
+         | DIVIDE           {: RESULT = new DivideDoubleOperator(); :}
+         ;
+
 expr ::= IDENT:i            {: RESULT = new ID(i); :}
-            |num_expr:e     {: RESULT = e; :}
+            |int_expr:e     {: RESULT = e; :}
+            |double_expr:e  {: RESULT = e; :}
             |str_expr:e     {: RESULT = e; :}
             ;
-// TODO: CHANGE READINT -> READ, READSTR -> READ
-// TODO: REMOVE LPAREN, RPAREN, POSITION
-num_expr ::=  NUM:e
+
+int_expr ::=  INT:e
                 {:
                     RESULT = new IntExpression(e.intValue());
                 :}
-            | READINT
-                 {:
-                    RESULT = new ReadExpression();
-                 :}
             | MINUS expr:e
                 {:
-                    RESULT = new UMinusExpression(e);
+                    RESULT = new UMinusIntExpression(e);
                 :}
-            | LPAREN expr:e RPAREN
+            | expr:e int_op:o expr:e2
                 {:
-                    RESULT = new PIntExpression(e);
+                    RESULT = new OperatorExpression(e, o, e2);
                 :}
-            | LENGTH LPAREN expr:e RPAREN
+            ;
+
+double_expr ::=  DOUBLE:e
                 {:
-                    RESULT = new StringLengthExpression(e);
+                    RESULT = new DoubleExpression(e.doubleValue());
                 :}
-            | POSITION LPAREN expr:s COMMA expr:s2 RPAREN
+            | MINUS expr:e
                 {:
-                    RESULT = new StringPositionExpression(s, s2);
+                    RESULT = new UMinusDoubleExpression(e);
                 :}
-            | expr:e num_op:o expr:e2
+            | expr:e double_op:o expr:e2
                 {:
                     RESULT = new OperatorExpression(e, o, e2);
                 :}
@@ -124,21 +130,9 @@ str_expr ::=  STRING:s
                 {:
                     RESULT = new StringExpression(s.substring(1, s.length()-1));
                 :}
-             | READSTR
-                {:
-                    RESULT = new ReadExpression();
-                :}
-            | CONCATENATE LPAREN expr:s COMMA expr:s2 RPAREN
-                {:
-                    RESULT = new ConcatStringExpression(s, s2);
-                :}
-              | SUBSTRING LPAREN expr:s COMMA expr:pos COMMA expr:length RPAREN
-                {:
-                    RESULT = new SubStringExpression(s, pos, length);
-                :}
              ;
 
-num_rel ::=   EQ         {: RESULT = new EqualsCondition(); :}
+int_rel ::=   EQ         {: RESULT = new EqualsCondition(); :}
             | LT         {: RESULT = new LessThanCondition(); :}
             | LE         {: RESULT = new LessOrEqualsCondition(); :}
             | GT         {: RESULT = new GreaterThanCondition(); :}
@@ -146,23 +140,24 @@ num_rel ::=   EQ         {: RESULT = new EqualsCondition(); :}
             | NE         {: RESULT = new NotEqualsCondition(); :}
             ;
 
-str_rel ::= STREQ     {: RESULT = new StringEqualsCondition(); :}
-          | STRNOTEQ  {: RESULT = new StringNotEqualsCondition(); :}
-          ;
+double_rel ::=   EQ         {: RESULT = new EqualsCondition(); :}
+            | LT            {: RESULT = new LessThanCondition(); :}
+            | LE            {: RESULT = new LessOrEqualsCondition(); :}
+            | GT            {: RESULT = new GreaterThanCondition(); :}
+            | GE            {: RESULT = new GreaterOrEqualsCondition(); :}
+            | NE            {: RESULT = new NotEqualsCondition(); :}
+            ;
 
 bool_expr ::= TRUE                               {: RESULT = new BooleanExpression(true); :}
             | FALSE                              {: RESULT = new BooleanExpression(false); :}
-            | LPAREN bool_expr:e RPAREN          {: RESULT = new PBooleanExpression(e); :}
             | NOT bool_expr:e                    {: RESULT = new NegationBooleanExpression(e); :}
             | bool_expr:e AND bool_expr:e2       {: RESULT = new AndBooleanExpression(e, e2); :}
             | bool_expr:e OR bool_expr:e2        {: RESULT = new OrBooleanExpression(e, e2); :}
-            | expr: e num_rel:o expr:e2          {: RESULT = new ConditionBooleanExpression(e, o, e2); :}
-            | expr:s str_rel:o expr:s2           {: RESULT = new ConditionBooleanExpression(s, o, s2); :}
+            | expr: e int_rel:o expr:e2          {: RESULT = new ConditionBooleanExpression(e, o, e2); :}
             ;
 
-instruction ::= assign_stat:si                  {: RESULT = si; :}
+instruction ::= assign_stat:si                   {: RESULT = si; :}
               | if_stat:si                       {: RESULT = si; :}
-              | while_stat:si                    {: RESULT = si; :}
               | BEGIN instr:si END               {: RESULT = new BeginEndInstruction(si); :}
               | output_stat:si                   {: RESULT = si; :}
               | EXIT                             {: System.exit(0); :}
@@ -178,12 +173,11 @@ assign_stat ::= IDENT:i ASSIGN expr:e          {: RESULT = new AssignInstruction
 if_stat ::= IF bool_expr:c THEN instruction:s                          {: RESULT = new IfInstruction(c, s); :}
             | IF bool_expr:c THEN instruction:s ELSE instruction:s2   {:  RESULT = new IfElseInstruction(c, s, s2); :}
             ;
-// TODO: REMOVE
-while_stat ::= WHILE bool_expr:c DO instruction:s       {: RESULT = new WhileInstruction(c, s); :}
-            | DO instruction:s WHILE bool_expr:c        {: RESULT = new DoWhileInstruction(c, s); :}
+
+output_stat ::= PRINT LPAREN expr:e  RPAREN             {: RESULT = new OutputInstruction(e); :}
             ;
 
-output_stat ::= PRINT LPAREN expr:e  RPAREN               {: RESULT = new OutputInstruction(e); :}
+input_stat ::= READ LPAREN expr:e RPAREN                {: RESULT = new ReadExpression(); :}
             ;
 
 program ::= instr:i

@@ -2,26 +2,16 @@ begin
 	a = 1;
 	b = 2;
 	c = a + b;
-    write (c);
+    write(c);
 	if (a < 5) then
 		a = 0 - a;
 	write (a);
 
 	b = 10;
-	while (b > 1) do
-	begin
-		write (b);
-		b = b - 1
-	end;
-
 	s1 = "asd";
 	s2 = "dsa";
-	s3 = concatenate(s1, s2);
 	write(s3);
 
-	write(length(s3));
-	write(substring(s3, 1, 3));
-	write(position(s3, s2));
 	write("enter string, I will write it");
 	write(readstr);
 
