@@ -167,7 +167,7 @@ instruction ::= assign_stat:si                  {: RESULT = si; :}
               | output_stat:si                   {: RESULT = si; :}
               | EXIT                             {: System.exit(0); :}
               ;
-
+// TODO: CHANGE TO \n
 instr ::= instr:i SEMI instruction:si           {: i.add(si); RESULT = i; :}
         | instruction:si                        {: RESULT = new InstructionList(si); :}
         ;
@@ -178,7 +178,7 @@ assign_stat ::= IDENT:i ASSIGN expr:e          {: RESULT = new AssignInstruction
 if_stat ::= IF bool_expr:c THEN instruction:s                          {: RESULT = new IfInstruction(c, s); :}
             | IF bool_expr:c THEN instruction:s ELSE instruction:s2   {:  RESULT = new IfElseInstruction(c, s, s2); :}
             ;
-
+// TODO: REMOVE
 while_stat ::= WHILE bool_expr:c DO instruction:s       {: RESULT = new WhileInstruction(c, s); :}
             | DO instruction:s WHILE bool_expr:c        {: RESULT = new DoWhileInstruction(c, s); :}
             ;
