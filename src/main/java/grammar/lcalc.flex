@@ -22,6 +22,11 @@ import java_cup.runtime.*;
         if(o.matches("[0-9]+.[0-9]+")) return new Double(o);
         return new Integer(o);
     }
+
+    private Symbol numberSymbol(Object value) {
+        if(value instanceof Integer) return symbol(sym.DOUBLE, value);
+        return symbol(sym.INT, value);
+    }
 %}
 
 
@@ -62,7 +67,6 @@ STRING = \"([^\\\"]|\\.)*\"
     "!="              { return symbol(sym.NE); }
 
     ";"                { return symbol(sym.SEMI); }
-    ","                { return symbol(sym.COMMA); }
     "("                { return symbol(sym.LPAREN); }
     ")"                { return symbol(sym.RPAREN); }
     "+"                { return symbol(sym.PLUS); }
@@ -71,7 +75,7 @@ STRING = \"([^\\\"]|\\.)*\"
     "%"                { return symbol(sym.MODE);  }
     "/"                { return symbol(sym.DIVIDE); }
 
-    {NUMBER}      { return symbol(sym.NUMBER, parseNumber(yytext())); }
+    {NUMBER}      { return numberSymbol(parseNumber(yytext())); }
     {IDENT}       { return symbol(sym.IDENT, new String(yytext()));}
     {STRING}      { return symbol(sym.STRING, new String(yytext())); }
 

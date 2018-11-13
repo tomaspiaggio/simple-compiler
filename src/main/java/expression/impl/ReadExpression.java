@@ -1,6 +1,7 @@
 package expression.impl;
 
 import expression.Expression;
+import instruction.Instruction;
 
 import java.util.HashMap;
 import java.util.HashSet;
