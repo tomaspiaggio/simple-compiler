@@ -107,11 +107,11 @@ num_expr ::=  NUM:e
                 :}
             | LENGTH LPAREN expr:e RPAREN
                 {:
-                    RESULT = new STRLengthExpression(e);
+                    RESULT = new StringLengthExpression(e);
                 :}
             | POSITION LPAREN expr:s COMMA expr:s2 RPAREN
                 {:
-                    RESULT = new STRPositionExpression(s, s2);
+                    RESULT = new StringPositionExpression(s, s2);
                 :}
             | expr:e num_op:o expr:e2
                 {:
@@ -125,7 +125,7 @@ str_expr ::=  STRING:s
                 :}
              | READSTR
                 {:
-                    RESULT = new StrEnterExpression();
+                    RESULT = new StringEnterExpression();
                 :}
             | CONCATENATE LPAREN expr:s COMMA expr:s2 RPAREN
                 {:
@@ -137,16 +137,16 @@ str_expr ::=  STRING:s
                 :}
              ;
 
-num_rel ::=   EQ         {: RESULT = new EqCond(); :}
-            | LT         {: RESULT = new LtCond(); :}
-            | LE         {: RESULT = new LeCond(); :}
-            | GT         {: RESULT = new GtCond(); :}
-            | GE         {: RESULT = new GeCond(); :}
-            | NE         {: RESULT = new NeCond(); :}
+num_rel ::=   EQ         {: RESULT = new EqualsCondition(); :}
+            | LT         {: RESULT = new LessThanCondition(); :}
+            | LE         {: RESULT = new LessOrEqualsCondition(); :}
+            | GT         {: RESULT = new GreaterThanCondition(); :}
+            | GE         {: RESULT = new GreaterOrEqualsCondition(); :}
+            | NE         {: RESULT = new NotEqualsCondition(); :}
             ;
 
-str_rel ::= STREQ     {: RESULT = new StrEqCond(); :}
-          | STRNOTEQ  {: RESULT = new StrNotEqCond(); :}
+str_rel ::= STREQ     {: RESULT = new StringEqualsCondition(); :}
+          | STRNOTEQ  {: RESULT = new StringNotEqualsCondition(); :}
           ;
 
 bool_expr ::= TRUE                               {: RESULT = new BooleanExpression(true); :}

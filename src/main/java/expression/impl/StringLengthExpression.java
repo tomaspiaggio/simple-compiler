@@ -4,10 +4,10 @@ import expression.Expression;
 
 import java.util.HashMap;
 
-public class STRLengthExpression implements Expression {
+public class StringLengthExpression implements Expression {
     Expression e;
 
-    public STRLengthExpression(Expression e) {
+    public StringLengthExpression(Expression e) {
         this.e = e;
     }
 

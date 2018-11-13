@@ -4,10 +4,10 @@ import expression.Expression;
 
 import java.util.HashMap;
 
-public class STRPositionExpression implements Expression {
+public class StringPositionExpression implements Expression {
     Expression e, e2;
 
-    public STRPositionExpression(Expression e, Expression e2) {
+    public StringPositionExpression(Expression e, Expression e2) {
         this.e = e;
         this.e2 = e2;
     }
