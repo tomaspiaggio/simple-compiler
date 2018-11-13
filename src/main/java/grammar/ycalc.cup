@@ -42,17 +42,18 @@ non terminal expression.Expression expression;
 non terminal expression.Expression numberExpression;
 non terminal expression.Expression stringExpression;
 non terminal expression.Expression booleanExpression;
+non terminal expression.Expression inputExpression;
 
 non terminal operator.Operator numberOperation;
+
 non terminal condition.Condition numberRelation;
 
-non terminal instruction.Instruction instruction;
 non terminal instruction.impl.InstructionList instructionList;
 
+non terminal instruction.Instruction instruction;
 non terminal instruction.Instruction assignInstruction;
 non terminal instruction.Instruction ifInstruction;
 non terminal instruction.Instruction outputInstruction;
-non terminal instruction.Instruction inputExpression;
 non terminal Main program;
 
 precedence left PLUS, MINUS;
@@ -73,68 +74,62 @@ numberOperation ::= PLUS:e           {: RESULT = (e instanceof Integer) ? new op
          | MODE:e                    {: RESULT = (e instanceof Integer) ? new operator.impl.integer.ModeIntOperator() : new operator.impl.floating.ModeDoubleOperator(); :}
          ;
 
-expression ::= IDENT:i              {: RESULT = new expression.ID(i); :}
-            |numberExpression:e     {: RESULT = e; :}
-            |stringExpression:e     {: RESULT = e; :}
-            |inputExpression:e      {: RESULT = e; :}
+expression ::= IDENT:i               {: RESULT = new expression.ID(i); :}
+         |numberExpression:e         {: RESULT = e; :}
+         |stringExpression:e         {: RESULT = e; :}
+         |inputExpression:e          {: RESULT = e; :}
+         ;
+
+inputExpression ::= READ LPAREN expression:e RPAREN  {: RESULT = new expression.impl.ReadExpression(); :}
             ;
 
-numberExpression ::=  INT:e | DOUBLE:e
-                {:
-                    RESULT = (e instanceof Integer) ? new expression.impl.IntExpression(e.intValue()) : new expression.impl.DoubleExpression(e.doubleValue());
-                :}
-            | MINUS expression:e
-                {:
-                    RESULT = (e instanceof Integer) ? new expression.impl.UMinusIntExpression(e) : new expression.impl.UMinusDoubleExpression(e);
-                :}
-            | expression:e numberOperation:o expression:e2
-                {:
-                    RESULT = new expression.impl.OperatorExpression(e, o, e2);
-                :}
-            ;
-
-stringExpression ::=  STRING:s {: RESULT = new expression.impl.StringExpression(s.substring(1, s.length()-1)); :}
-             ;
-
-numberRelation ::=   EQ         {: RESULT = new condition.impl.EqualsCondition(); :}
-                   | LT         {: RESULT = new condition.impl.LessThanCondition(); :}
-                   | LE         {: RESULT = new condition.impl.LessOrEqualsCondition(); :}
-                   | GT         {: RESULT = new condition.impl.GreaterThanCondition(); :}
-                   | GE         {: RESULT = new condition.impl.GreaterOrEqualsCondition(); :}
-                   | NE         {: RESULT = new condition.impl.NotEqualsCondition(); :}
-            ;
-
-booleanExpression ::= TRUE                                       {: RESULT = new expression.impl.BooleanExpression(true); :}
-            | FALSE                                              {: RESULT = new expression.impl.BooleanExpression(false); :}
-            | NOT booleanExpression:e                            {: RESULT = new expression.impl.NegationBooleanExpression(e); :}
-            | booleanExpression:e AND booleanExpression:e2       {: RESULT = new expression.impl.AndBooleanExpression(e, e2); :}
-            | booleanExpression:e OR booleanExpression:e2        {: RESULT = new expression.impl.OrBooleanExpression(e, e2); :}
-            | expression: e numberRelation:o expression:e2       {: RESULT = new expression.impl.ConditionBooleanExpression(e, o, e2); :}
-            ;
-
-instruction ::= assignInstruction:si                   {: RESULT = si; :}
-              | ifInstruction:si                       {: RESULT = si; :}
-              | BEGIN instructionList:si END           {: RESULT = new instruction.impl.BeginEndInstruction(si); :}
-              | outputInstruction:si                   {: RESULT = si; :}
-              | EXIT                                   {: System.exit(0); :}
-              ;
-
-instructionList ::= instructionList:i SEMI instruction:si   {: i.add(si); RESULT = i; :}
-        | instruction:si                                    {: RESULT = new instruction.impl.InstructionList(si); :}
+numberExpression ::= INT:e          {: RESULT = new expression.impl.IntExpression(e.intValue()); :}
+        | DOUBLE:e                  {: RESULT = new expression.impl.DoubleExpression(e.doubleValue()); :}
+        | expression:e numberOperation:o expression:e2
+            {:
+                RESULT = new expression.impl.OperatorExpression(e, o, e2);
+            :}
         ;
 
-assignInstruction ::= IDENT:i ASSIGN expression:e           {: RESULT = new instruction.AssignInstruction(i,e); :}
-                ;
+stringExpression ::=  STRING:s {: RESULT = new expression.impl.StringExpression(s.substring(1, s.length()-1)); :}
+        ;
+
+numberRelation ::=   EQ        {: RESULT = new condition.impl.EqualsCondition(); :}
+        | LT                   {: RESULT = new condition.impl.LessThanCondition(); :}
+        | LE                   {: RESULT = new condition.impl.LessOrEqualsCondition(); :}
+        | GT                   {: RESULT = new condition.impl.GreaterThanCondition(); :}
+        | GE                   {: RESULT = new condition.impl.GreaterOrEqualsCondition(); :}
+        | NE                   {: RESULT = new condition.impl.NotEqualsCondition(); :}
+        ;
+
+booleanExpression ::= TRUE                                   {: RESULT = new expression.impl.BooleanExpression(true); :}
+        | FALSE                                              {: RESULT = new expression.impl.BooleanExpression(false); :}
+        | NOT booleanExpression:e                            {: RESULT = new expression.impl.NegationBooleanExpression(e); :}
+        | booleanExpression:e AND booleanExpression:e2       {: RESULT = new expression.impl.AndBooleanExpression(e, e2); :}
+        | booleanExpression:e OR booleanExpression:e2        {: RESULT = new expression.impl.OrBooleanExpression(e, e2); :}
+        | expression: e numberRelation:o expression:e2       {: RESULT = new expression.impl.ConditionBooleanExpression(e, o, e2); :}
+        ;
+
+instruction ::= assignInstruction:si                         {: RESULT = si; :}
+        | ifInstruction:si                                   {: RESULT = si; :}
+        | BEGIN instructionList:si END                       {: RESULT = new instruction.impl.BeginEndInstruction(si); :}
+        | outputInstruction:si                               {: RESULT = si; :}
+        | EXIT                                               {: System.exit(0); :}
+        ;
+
+instructionList ::= instructionList:i SEMI instruction:si    {: i.add(si); RESULT = i; :}
+        | instruction:si                                     {: RESULT = new instruction.impl.InstructionList(si); :}
+        ;
+
+assignInstruction ::= IDENT:i ASSIGN expression:e            {: RESULT = new instruction.AssignInstruction(i,e); :}
+        ;
 
 ifInstruction ::= IF booleanExpression:c THEN instruction:s                   {: RESULT = new instruction.impl.IfInstruction(c, s); :}
-            | IF booleanExpression:c THEN instruction:s ELSE instruction:s2   {: RESULT = new instruction.impl.IfElseInstruction(c, s, s2); :}
-            ;
+        | IF booleanExpression:c THEN instruction:s ELSE instruction:s2       {: RESULT = new instruction.impl.IfElseInstruction(c, s, s2); :}
+        ;
 
 outputInstruction ::= WRITE LPAREN expression:e  RPAREN                       {: RESULT = new instruction.impl.OutputInstruction(e); :}
-            ;
-
-inputExpression ::= READ LPAREN expression:e RPAREN                           {: RESULT = new expression.impl.ReadExpression(); :}
-            ;
+        ;
 
 program ::= instructionList:i
           {:

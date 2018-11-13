@@ -33,7 +33,8 @@ import java_cup.runtime.*;
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
-NUMBER = [0-9]+.[0-9]+ | [0-9]+
+UNUMBER = [0-9]+.[0-9]+ | [0-9]+
+NUMBER = [-+]{UNUMBER} | {UNUMBER}
 IDENT = [A-Za-z_][A-Za-z_0-9]*
 STRING = \"([^\\\"]|\\.)*\"
 

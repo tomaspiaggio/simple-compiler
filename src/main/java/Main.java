@@ -19,7 +19,7 @@ public class Main {
     public static void main(String args[]) {
         try {
             Parser p;
-            if(args[0].length() != 0) p = new Parser(new Lexer(new FileReader("assets/test.txt")));
+            if(args.length != 0) p = new Parser(new Lexer(new FileReader("assets/test.txt")));
             else {
                 System.out.printf("Paiton 1.0.5 | Virtual Envaironment | (default %s)\n", new Date().toString());
                 System.out.println("[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin");
