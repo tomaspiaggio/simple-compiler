@@ -11,13 +11,12 @@ public class EqualsCondition implements Condition {
         Object v1 = e1.run(hm);
         Object v2 = e2.run(hm);
 
-        if (v1 instanceof Integer && v2 instanceof Integer) {
-            return (Integer) v1 == (Integer) v2;
-        } else {
+        if ((v1 instanceof Comparable) && (v2 instanceof Comparable)) {
+            return ((Comparable) v1).compareTo(v2) == 0;
+        } else{
             System.out.println("Error: wrong objects type");
             System.exit(1);
             return false;
         }
-
     }
 }

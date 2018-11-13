@@ -6,8 +6,8 @@ parser code {:
 
     public void report_error(String message, Object info) {
         StringBuilder m = new StringBuilder("Error");
-        if (info instanceof java_cup.runtime.Symbol) {
-            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+        if (info instanceof Symbol) {
+            Symbol s = ((Symbol) info);
             if (s.left >= 0) {
                 m.append(" in line "+(s.left+1));
                 if (s.right >= 0)
@@ -24,18 +24,13 @@ parser code {:
     }
 :};
 
-/** Terminals */
 
-terminal           AND, OR, NOT, TRUE, FALSE; // boolean
-
-// flow
+terminal           AND, OR, NOT, TRUE, FALSE;
 terminal           BEGIN, END, EXIT;
 terminal           IF, THEN, ELSE;
-
-terminal           PRINT, READ;
+terminal           WRITE, READ;
 terminal           ASSIGN;
-terminal   	       EQ, LT, LE, GT, GE, NE; // int_rel
-
+terminal   	       EQ, LT, LE, GT, GE, NE;
 terminal           SEMI, PLUS, MINUS, TIMES, DIVIDE, MODE, LPAREN, RPAREN;
 terminal Integer   INT;
 terminal Double    DOUBLE;
@@ -43,7 +38,6 @@ terminal String    IDENT;
 terminal String    STRING;
 
 
-/** Non-terminals **/
 non terminal Expression expr;
 non terminal Expression int_expr;
 non terminal Expression double_expr;
@@ -51,9 +45,8 @@ non terminal Expression str_expr;
 non terminal Expression bool_expr;
 
 non terminal Operator int_op;
-non terminal Condition int_rel;
-
 non terminal Operator double_op;
+non terminal Condition int_rel;
 non terminal Condition double_rel;
 
 non terminal Instruction instruction;
@@ -61,11 +54,10 @@ non terminal InstructionList instr;
 
 non terminal Instruction assign_stat;
 non terminal Instruction if_stat;
-//non terminal Instruction while_stat;
 non terminal Instruction output_stat;
+non terminal Instruction input_stat;
 non terminal Main program;
 
-/** Precedence */
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE, MODE;
 
@@ -76,9 +68,7 @@ precedence left ELSE;
 
 start with program;
 
-/** ============= GRAMMAR ============= */
 
-/** done */
 int_op ::= PLUS             {: RESULT = new PlusIntOperator(); :}
          | MINUS            {: RESULT = new MinusIntOperator(); :}
          | TIMES            {: RESULT = new TimesIntOperator(); :}
@@ -126,10 +116,7 @@ double_expr ::=  DOUBLE:e
                 :}
             ;
 
-str_expr ::=  STRING:s
-                {:
-                    RESULT = new StringExpression(s.substring(1, s.length()-1));
-                :}
+str_expr ::=  STRING:s {: RESULT = new StringExpression(s.substring(1, s.length()-1)); :}
              ;
 
 int_rel ::=   EQ         {: RESULT = new EqualsCondition(); :}
@@ -162,7 +149,7 @@ instruction ::= assign_stat:si                   {: RESULT = si; :}
               | output_stat:si                   {: RESULT = si; :}
               | EXIT                             {: System.exit(0); :}
               ;
-// TODO: CHANGE TO \n
+
 instr ::= instr:i SEMI instruction:si           {: i.add(si); RESULT = i; :}
         | instruction:si                        {: RESULT = new InstructionList(si); :}
         ;
@@ -174,7 +161,7 @@ if_stat ::= IF bool_expr:c THEN instruction:s                          {: RESULT
             | IF bool_expr:c THEN instruction:s ELSE instruction:s2   {:  RESULT = new IfElseInstruction(c, s, s2); :}
             ;
 
-output_stat ::= PRINT LPAREN expr:e  RPAREN             {: RESULT = new OutputInstruction(e); :}
+output_stat ::= WRITE LPAREN expr:e  RPAREN             {: RESULT = new OutputInstruction(e); :}
             ;
 
 input_stat ::= READ LPAREN expr:e RPAREN                {: RESULT = new ReadExpression(); :}

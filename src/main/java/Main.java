@@ -16,18 +16,20 @@ public class Main {
         instructionList.run(hm);
     }
 
-    public static void main(String argv[]) {
-//        try {
-////            Parser p = new Parser(new Lexer(new FileReader("assets/test.txt")));
-//            System.out.printf("Paiton 1.0.5 | Virtual Envaironment | (default %s)\n", new Date().toString());
-//            System.out.println("[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin");
-//            System.out.println("Type \"readstr\" or \"readint\" to read, \"write\" to print, or \"end\" to finish.");
-//            Parser p = new Parser(new Lexer(new FileReader("assets/test.txt")));
-////            Parser p = new Parser(new Lexer(new Interpreter()));
-//            Object result = p.parse().value;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public static void main(String args[]) {
+        try {
+            Parser p;
+            if(args[0].length() != 0) p = new Parser(new Lexer(new FileReader("assets/test.txt")));
+            else {
+                System.out.printf("Paiton 1.0.5 | Virtual Envaironment | (default %s)\n", new Date().toString());
+                System.out.println("[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin");
+                System.out.println("Type \"read\" to read, \"write\" to print, or \"end\" to finish.");
+                p = new Parser(new Lexer(new Interpreter()));
+            }
+            Object result = p.parse().value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

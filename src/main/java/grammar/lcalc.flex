@@ -17,14 +17,18 @@ import java_cup.runtime.*;
     private Symbol symbol(int type, Object value) {
         return new Symbol(type, yyline, yycolumn, value);
     }
+
+    private Object parseNumber(String o) {
+        if(o.matches("[0-9]+.[0-9]+")) return new Double(o);
+        return new Integer(o);
+    }
 %}
 
 
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
-DOUBLE = [0-9]+.[0-9]
-INT = [0-9]+
+NUMBER = [0-9]+.[0-9]+ | [0-9]+
 IDENT = [A-Za-z_][A-Za-z_0-9]*
 STRING = \"([^\\\"]|\\.)*\"
 
@@ -46,7 +50,7 @@ STRING = \"([^\\\"]|\\.)*\"
     "then"            { return symbol(sym.THEN); }
     "else"            { return symbol(sym.ELSE); }
 
-    "write"           { return symbol(sym.PRINT); }
+    "write"           { return symbol(sym.WRITE); }
     "read"            { return symbol(sym.READ); }
 
     "=="              { return symbol(sym.EQ); }
@@ -67,8 +71,7 @@ STRING = \"([^\\\"]|\\.)*\"
     "%"                { return symbol(sym.MODE);  }
     "/"                { return symbol(sym.DIVIDE); }
 
-    {INT}         { return symbol(sym.INT, new Integer(yytext())); }
-    {DOUBLE}      { return symbol(sym.DOUBLE, new Double(yytext())); }
+    {NUMBER}      { return symbol(sym.NUMBER, parseNumber(yytext())); }
     {IDENT}       { return symbol(sym.IDENT, new String(yytext()));}
     {STRING}      { return symbol(sym.STRING, new String(yytext())); }
 
