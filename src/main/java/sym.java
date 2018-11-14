@@ -12,7 +12,6 @@ public interface sym {
   public static final int READ = 14;
   public static final int NE = 21;
   public static final int LT = 17;
-  public static final int IDENT = 32;
   public static final int ELSE = 12;
   public static final int PLUS = 23;
   public static final int INT = 30;
@@ -26,6 +25,7 @@ public interface sym {
   public static final int IF = 10;
   public static final int LPAREN = 28;
   public static final int GT = 19;
+  public static final int ID = 32;
   public static final int LE = 18;
   public static final int WRITE = 13;
   public static final int BEGIN = 7;
@@ -73,7 +73,7 @@ public interface sym {
   "RPAREN",
   "INT",
   "DOUBLE",
-  "IDENT",
+  "ID",
   "STRING"
   };
 }

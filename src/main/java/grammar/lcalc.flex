@@ -37,6 +37,7 @@ UNUMBER = [0-9]+.[0-9]+ | [0-9]+
 NUMBER = [-+]{UNUMBER} | {UNUMBER}
 IDENT = [A-Za-z_][A-Za-z_0-9]*
 STRING = \"([^\\\"]|\\.)*\"
+ID = [a-zA-Z][a-zA-Z_0-9]*
 
 %%
 
@@ -77,8 +78,8 @@ STRING = \"([^\\\"]|\\.)*\"
     "/"                { return symbol(sym.DIVIDE); }
 
     {NUMBER}      { return numberSymbol(parseNumber(yytext())); }
-    {IDENT}       { return symbol(sym.IDENT, new String(yytext()));}
     {STRING}      { return symbol(sym.STRING, new String(yytext())); }
+    {ID}          { return symbol(sym.ID, new String(yytext())); }
 
     {WhiteSpace}       { /* do nothing */ }
     <<EOF>> { return symbol(sym.EOF); }

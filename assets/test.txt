@@ -5,16 +5,14 @@ begin
     write(c);
 	if (a < 5) then
 		a = 0 - a;
-	write (a);
+	write(a);
 
 	b = 10;
 	s1 = "asd";
 	s2 = "dsa";
 	write(s3);
 
-	write("enter string, I will write it");
-	write(readstr);
+	write(read());
 
-	write("enter int, I will write it");
-	write(readint);
+	write(read());
 end
