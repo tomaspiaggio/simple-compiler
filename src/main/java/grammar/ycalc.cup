@@ -32,8 +32,8 @@ terminal           WRITE, READ;
 terminal           ASSIGN;
 terminal   	       EQ, LT, LE, GT, GE, NE;
 terminal           SEMI, PLUS, MINUS, TIMES, DIVIDE, MODE, LPAREN, RPAREN;
-terminal Integer   INT;
-terminal Double    DOUBLE;
+terminal int       INT;
+terminal double    DOUBLE;
 terminal String    ID;
 terminal String    STRING;
 
@@ -66,26 +66,62 @@ precedence left ELSE;
 
 start with program;
 
-
-numberOperation ::= PLUS:e                                                    {: RESULT = (e instanceof Integer) ? new operator.impl.integer.PlusIntOperator() : new operator.impl.floating.PlusDoubleOperator(); :}
-         | MINUS:e                                                            {: RESULT = (e instanceof Integer) ? new operator.impl.integer.MinusIntOperator() : new operator.impl.floating.MinusDoubleOperator(); :}
-         | TIMES:e                                                            {: RESULT = (e instanceof Integer) ? new operator.impl.integer.TimesIntOperator() : new operator.impl.floating.TimesDoubleOperator(); :}
-         | DIVIDE:e                                                           {: RESULT = (e instanceof Integer) ? new operator.impl.integer.DivideIntOperator() : new operator.impl.floating.DivideDoubleOperator(); :}
-         | MODE:e                                                             {: RESULT = (e instanceof Integer) ? new operator.impl.integer.ModeIntOperator() : new operator.impl.floating.ModeDoubleOperator(); :}
-         ;
+// TODO: NULL IS GETTING HERE
+numberOperation ::= PLUS:e                                                    {:
+                                                                                 RESULT = (e instanceof Integer) ? new operator.impl.integer.PlusIntOperator() : new operator.impl.floating.PlusDoubleOperator();
+                                                                                 System.out.println("Added operation PlusOperator " + e);
+                                                                              :}
+        | MINUS:e                                                             {:
+                                                                                 RESULT = (e instanceof Integer) ? new operator.impl.integer.MinusIntOperator() : new operator.impl.floating.MinusDoubleOperator();
+                                                                                 System.out.println("Added operation MinusOperator " + e);
+                                                                              :}
+        | TIMES:e                                                             {:
+                                                                                 RESULT = (e instanceof Integer) ? new operator.impl.integer.TimesIntOperator() : new operator.impl.floating.TimesDoubleOperator();
+                                                                                 System.out.println("Added operation TimesOperator " + e);
+                                                                              :}
+        | DIVIDE:e                                                            {:
+                                                                                 RESULT = (e instanceof Integer) ? new operator.impl.integer.DivideIntOperator() : new operator.impl.floating.DivideDoubleOperator();
+                                                                                 System.out.println("Added operation DivideOperator " + e);
+                                                                              :}
+        | MODE:e                                                              {:
+                                                                                 RESULT = (e instanceof Integer) ? new operator.impl.integer.ModeIntOperator() : new operator.impl.floating.ModeDoubleOperator();
+                                                                                 System.out.println("Added operation ModeOperator " + e);
+                                                                              :}
+        ;
 
 expression ::= ID:i                                                           {: RESULT = new expression.ID(i); :}
-         |stringExpression:e                                                  {: RESULT = e; :}
-         |numberExpression:e                                                  {: RESULT = e; :}
-         |inputExpression:e                                                   {: RESULT = e; :}
-         ;
+        | stringExpression:e                                                  {:
+                                                                                 RESULT = e;
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
+        | numberExpression:e                                                  {:
+                                                                                 RESULT = e;
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
+        | inputExpression:e                                                   {:
+                                                                                 RESULT = e;
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
+        ;
 
-inputExpression ::= READ LPAREN expression:e RPAREN                           {: RESULT = new expression.impl.ReadExpression(); :}
-            ;
+inputExpression ::= READ LPAREN RPAREN                                        {:
+                                                                                 RESULT = new expression.impl.ReadExpression();
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
+        ;
 
-numberExpression ::= INT:e                                                    {: RESULT = new expression.impl.IntExpression(e); :}
-        | DOUBLE:e                                                            {: RESULT = new expression.impl.DoubleExpression(e); :}
-        | expression:e numberOperation:o expression:e2                        {: RESULT = new expression.impl.OperatorExpression(e, o, e2); :}
+numberExpression ::= INT:e                                                    {:
+                                                                                 RESULT = new expression.impl.IntExpression(e);
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
+        | DOUBLE:e                                                            {:
+                                                                                 RESULT = new expression.impl.DoubleExpression(e);
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
+        | expression:e numberOperation:o expression:e2                        {:
+                                                                                 RESULT = new expression.impl.OperatorExpression(e, o, e2);
+                                                                                 System.out.println("Added expression " + RESULT);
+                                                                              :}
         ;
 
 stringExpression ::=  STRING:s                                                {: RESULT = new expression.impl.StringExpression(s.substring(1, s.length()-1)); :}
@@ -109,23 +145,22 @@ booleanExpression ::= TRUE                                                    {:
 
 instruction ::= assignInstruction:si                                          {: RESULT = si; :}
         | ifInstruction:si                                                    {: RESULT = si; :}
+        | outputInstruction:si                                                {: RESULT = si; :}
         | BEGIN instructionList:si END                                        {:
                                                                                 System.out.println("The process has begun");
                                                                                 RESULT = new instruction.impl.BeginEndInstruction(si);
                                                                               :}
-
-        | outputInstruction:si                                                {: RESULT = si; :}
-        | EXIT                                                                {: System.exit(0); :}
+        | SEMI instructionList:list EXIT                                      {: new Main(list).exec(); :}
         ;
 
 instructionList ::= instructionList:i SEMI instruction:si                     {:
-                                                                                System.out.println("Added instruction" + si.toString());
+                                                                                System.out.println("Added instruction " + si.toString());
                                                                                 i.add(si); RESULT = i;
                                                                               :}
 
         | instruction:si                                                      {:
                                                                                 RESULT = new instruction.impl.InstructionList(si);
-                                                                                new Main(RESULT).exec();
+//                                                                                new Main(RESULT).exec();
                                                                               :}
         ;
 

@@ -1,18 +1,6 @@
 begin
 	a = 1;
 	b = 2;
-	c = a + b;
-    write(c);
-	if (a < 5) then
-		a = 0 - a;
-	write(a);
-
-	b = 10;
-	s1 = "asd";
-	s2 = "dsa";
-	write(s3);
-
-	write(read());
-
-	write(read());
-end
+	c = b - a;
+	write(c);
+exit

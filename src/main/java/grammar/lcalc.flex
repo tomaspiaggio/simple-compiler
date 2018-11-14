@@ -19,8 +19,8 @@ import java_cup.runtime.*;
     }
 
     private Object parseNumber(String o) {
-        if(o.matches("[0-9]+.[0-9]+")) return new Double(o);
-        return new Integer(o);
+        if(o.matches("[0-9]+.[0-9]+")) return Double.parseDouble(o);
+        return Integer.parseInt(o);
     }
 
     private Symbol numberSymbol(Object value) {
@@ -61,7 +61,7 @@ ID = [a-zA-Z][a-zA-Z_0-9]*
     "read"            { return symbol(sym.READ); }
 
     "=="              { return symbol(sym.EQ); }
-    "="               {return symbol(sym.ASSIGN); }
+    "="               { return symbol(sym.ASSIGN); }
     "<"               { return symbol(sym.LT); }
     "<="              { return symbol(sym.LE); }
     ">"               { return symbol(sym.GT); }
